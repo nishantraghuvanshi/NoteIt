@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
+
 const Resgister = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -14,11 +15,17 @@ const Resgister = () => {
                 password
             })
         })
+        if(response.ok){
+            alert('User created successfully.')
+            console.log('success')
+        }
+        else{
+            alert('User already exists.')
+            console.log('error')
+        }
     }
 
   return (
-
-    
 
     <div>
         <form className='w-[400px] m-auto mt-7' onSubmit={Register}>
