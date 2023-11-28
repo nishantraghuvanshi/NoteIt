@@ -110,7 +110,7 @@ const MainApp = () => {
           onClick={filteredCards}>Search</button>
          </form>
        </div>
-       <div className='flex justify-between gap-4'>
+       <div className='flex flex-wrap gap-3 m-2'>
           {cards.map((card, index) => (
         <Card key={index} {...card} onDelete={() => deleteCard(index)} />
       ))}
