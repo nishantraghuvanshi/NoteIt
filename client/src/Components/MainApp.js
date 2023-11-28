@@ -15,7 +15,13 @@ const MainApp = () => {
 
   async function handleAdd(e) {
     e.preventDefault()
-    addCard(title, desc, tag)
+    const userId = localStorage.getItem('userId')
+    if (title === '' || desc === '' || tag === '') 
+    {
+      return alert('Please fill all the fields')
+    }
+    else{
+      addCard(title, desc, tag)
     setTitle('')
     setDesc('')
     setTag('')
@@ -27,16 +33,18 @@ const MainApp = () => {
       body:JSON.stringify({
         title:title,
         desc:desc,
-        tag:tag
+        tag:tag,
+        userId:userId
       })
     })
     if(response.status===201){
       console.log("ok");
     }
+    }
   }
 
-  const addCard = (title, desc, tags) => {
-    const newCard = { title, desc, tags }
+  const addCard = (title, desc, tag) => {
+    const newCard = { title, desc, tag }
     setCards([...cards, newCard])
   }
 

@@ -12,6 +12,8 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [redirect, setRedirect] = useState(false)
   const {setUser} = useContext(UserContext)
+
+  
   const handleclick = async (e) =>{
     e.preventDefault()
     try {
@@ -29,6 +31,7 @@ const Login = () => {
         response.json().then(data => {
         setUser(data)
         setRedirect(true)
+        localStorage.setItem('userId',data.id)
         })
         
       }
@@ -42,7 +45,7 @@ const Login = () => {
     }
     if(redirect){
       setRedirect(false)
-      return window.location.href = '/MainApp'
+      return window.location.href = '/'
     }
 
   }
@@ -67,3 +70,4 @@ const Login = () => {
 }
 
 export default Login
+

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-const Card = ({title,desc,tags,onDelete}) => {
+const Card = ({title,desc,tag,onDelete}) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const currentDate = new Date().toLocaleDateString();
-  const newTags=tags.split(' ')
+  const newTag=tag.split(' ')
   
   const handleDelete = () => {
     onDelete();
@@ -23,9 +22,9 @@ const Card = ({title,desc,tags,onDelete}) => {
       <div className="bg-[#514f4a] shadow-xl h-48 overflow-hidden rounded-lg">
         <div className="card-body flex flex-col h-full text-white p-1">
           <h2 className="card-title font-bold text-2xl">{title}</h2>
-          {tags &&  (
+          {tag &&  (
             <div className="text-sm text-gray-300">
-              {newTags.map((tag, index) => (
+              {newTag.map((tag, index) => (
                 <span key={index} className="mr-2 bg-blue-100 font-light text-black rounded-lg  px-1">
                   {tag}
                 </span>
@@ -53,9 +52,9 @@ const Card = ({title,desc,tags,onDelete}) => {
           <div className="bg-white p-8 w-1/4 rounded-md">
             {/* Adjusted width to cover 25% of the screen */}
               <h2 className="font-bold text-3xl mb-4">{title}</h2>
-            {tags &&  (
+            {tag &&  (
             <div className="text-sm text-gray-300">
-              {newTags.map((tag, index) => (
+              {newTag.map((tag, index) => (
                 <span key={index} className="mr-2 bg-blue-100 text-black rounded-lg font-semibold px-1">
                   {tag}
                 </span>

@@ -13,6 +13,7 @@ const cardSchema = new mongoose.Schema({
         trim: true,    
     },
     tag: String,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 },{
     timestamps:true
 });
