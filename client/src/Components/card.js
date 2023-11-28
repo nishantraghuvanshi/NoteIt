@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-const Card = (props) => {
+const Card = ({title,desc,tags,onDelete}) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const newTags=props.tags.split(' ')
+  const newTags=tags.split(' ')
   
   const handleDelete = () => {
-    
+    onDelete();
   }
 
   const openModal = () => {
@@ -17,12 +17,13 @@ const Card = (props) => {
     setModalOpen(false);
   };
 
+
   return (
     
       <div className="bg-[#514f4a] shadow-xl h-48 overflow-hidden rounded-lg">
         <div className="card-body flex flex-col h-full text-white">
-          <h2 className="card-title font-bold text-2xl">{props.title}</h2>
-          {props.tags &&  (
+          <h2 className="card-title font-bold text-2xl">{title}</h2>
+          {tags &&  (
             <div className="text-sm text-gray-300">
               {newTags.map((tag, index) => (
                 <span key={index} className="mr-2 bg-blue-100 text-black rounded-lg font-semibold px-1">
@@ -32,7 +33,7 @@ const Card = (props) => {
             </div>
           )}
           <hr className="border-white my-2" />
-          <p className="flex-1 overflow-y-auto flex-wrap">{props.desc}</p>
+          <p className="flex-1 overflow-y-auto flex-wrap">{desc}</p>
           <div className="card-actions flex justify-between items-center">
             <button
               className="bg-red-600 m-2 text-white font-bold px-4 py-1 rounded-lg"
@@ -50,8 +51,8 @@ const Card = (props) => {
         <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 w-1/4 rounded-md">
             {/* Adjusted width to cover 25% of the screen */}
-            <h2 className="font-bold text-3xl mb-4">{props.title}</h2>
-            {props.tags &&  (
+            <h2 className="font-bold text-3xl mb-4">{title}</h2>
+            {tags &&  (
             <div className="text-sm text-gray-300">
               {newTags.map((tag, index) => (
                 <span key={index} className="mr-2 bg-blue-100 text-black rounded-lg font-semibold px-1">
@@ -60,7 +61,7 @@ const Card = (props) => {
               ))}
             </div>
           )}
-            <p>{props.desc}</p>
+            <p>{desc}</p>
             <div className="mt-4 flex justify-end">
               <button
                 className="bg-red-600 text-white font-bold px-4 py-1 rounded-lg"

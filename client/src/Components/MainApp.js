@@ -10,13 +10,29 @@ const MainApp = () => {
   const [desc, setDesc] = React.useState('')
   const [tag, setTag] = React.useState('')
   const [cards, setCards] = React.useState([])
+  const [search, setSearch] = React.useState('')
 
-  function handleAdd(e) {
+
+  async function handleAdd(e) {
     e.preventDefault()
     addCard(title, desc, tag)
     setTitle('')
     setDesc('')
     setTag('')
+    const response = await fetch("http://localhost:8000/cards",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        title:title,
+        desc:desc,
+        tag:tag
+      })
+    })
+    if(response.status===201){
+      console.log("ok");
+    }
   }
 
   const addCard = (title, desc, tags) => {
@@ -24,11 +40,32 @@ const MainApp = () => {
     setCards([...cards, newCard])
   }
 
-    const deleteCard = (index) => {
+  const deleteCard = (index) => {
     const newCards = [...cards];
     newCards.splice(index, 1);
     setCards(newCards);
+    const respose = fetch("http://localhost:8000/delete",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        index:index
+      })
+    })
+    console.log(respose);
   };
+  const filtercards=[]
+  const filteredCards = (e) => {
+    e.preventDefault()
+    const newCards = cards.filter(card => card.title.toLowerCase().includes(search.toLowerCase()))
+    newCards.map((card,index) => {
+       filtercards.push(card)
+       return filtercards
+    })
+  }
+
+
   
   return (
     <div>
@@ -48,7 +85,7 @@ const MainApp = () => {
           value={tag}
           onChange={(e)=>{setTag(e.target.value)}}
           />
-          <input 
+          <textarea 
           type='input' 
           placeholder='description' 
           className='block w-full p-5 border-2 my-3 rounded-lg'
@@ -63,16 +100,30 @@ const MainApp = () => {
        <div className='flex justify-between items-center'>
          <h2 className='text-2xl font-serif font-semibold'>Your Notes</h2>
          <form className='flex justify-between gap-x-2'>
-          <input type='text' placeholder='search' className='block border-2 my-4 rounded-lg'/>
-          <button className='block p-1 border-2 my-4 rounded-lg bg-blue-700 text-white font-semibold'>Search</button>
+          <input type='text' 
+          placeholder='search' 
+          className='block border-2 my-4 rounded-lg'
+          value={search}
+          onChange={(e)=>{setSearch(e.target.value)}}/>
+          <button 
+          className='block p-1 border-2 my-4 rounded-lg bg-blue-700 text-white font-semibold'
+          onClick={filteredCards}>Search</button>
          </form>
        </div>
        <div className='flex justify-between gap-4'>
           {cards.map((card, index) => (
-        <Card key={index} {...card} />
+        <Card key={index} {...card} onDelete={() => deleteCard(index)} />
       ))}
+      
        </div>
+       
       </div>
+      <div className='bg-gray-600 h-screen'>
+            {filtercards.map((card, index) => (
+        <Card key={index} {...card} onDelete={() => deleteCard(index)} />
+      ))}
+      
+       </div>
       
     </div>
   )

@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./db/index.js";
 import User from "./models/user.model.js";
 import jwt from "jsonwebtoken";
+import Card from "./models/card.model.js";
 
 const app=Express();
 app.use(cors({
@@ -108,5 +109,39 @@ app.post("/logout",(req,res)=>{
     }
 })
     
+
+app.post("/cards", async (req, res) => {
+  try {
+    const { title, desc, tag } = req.body;
+    const newCard = await Card.create({ title, desc, tag });
+    const savedCard = await newCard.save();
+    res.status(201).json("ok");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get("/cards", async (req, res) => {
+  try {
+    const cards = await Card.find();
+    res.status(200).json(cards);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post("/delete", async (req, res) => {
+  try {
+    const { title } = req.body;
+    const findCard = await Card.findOne(title);
+    console.log(findCard._id);
+    res.status(200).json("ok");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
