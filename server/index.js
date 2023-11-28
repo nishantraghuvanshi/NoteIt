@@ -119,7 +119,7 @@ app.post("/cards", async (req, res) => {
     const { title, desc, tag,userId } = req.body;
     const newCard = await Card.create({ title, desc, tag,user: userId });
     const savedCard = await newCard.save();
-    res.status(201).json("ok");
+    res.status(201).json(savedCard);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -137,8 +137,8 @@ app.get("/cards", async (req, res) => {
  //NEED TO IMPLEMENT DELETE AND SEARCH PROPERLY
 app.post("/delete", async (req, res) => {
   try {
-    const { title } = req.body;
-    const findCard = await Card.findOne(title);
+    const { title,cardId } = req.body;
+    const findCard = await Card.findByIdAndDelete(cardId);
     res.status(200).json("ok");
   } catch (error) {
     console.error(error);

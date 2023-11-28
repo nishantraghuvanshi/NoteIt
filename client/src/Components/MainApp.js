@@ -1,21 +1,42 @@
 import React from 'react'
 import Card from './card.js'
-
-
-
+import { useState } from 'react'
+import UserContext from '../userContext'
 
 
 const MainApp = () => {
-  const [title, setTitle] = React.useState('')
-  const [desc, setDesc] = React.useState('')
-  const [tag, setTag] = React.useState('')
-  const [cards, setCards] = React.useState([])
-  const [search, setSearch] = React.useState('')
+  const [title, setTitle] = useState('')
+  const [desc, setDesc] = useState('')
+  const [tag, setTag] = useState('')
+  const [cards, setCards] =useState([])
+  const [search, setSearch] = useState('')
+  const [filtercards,setFiltercards] = useState([])
+  const {user,setUser} = React.useContext(UserContext)
 
 
+  const userId = localStorage.getItem('userId')
+
+  // async function getCards(){
+  //   const response = await fetch("http://localhost:8000/cards",{
+  //     method:"GET",
+  //     headers:{
+  //       "Content-Type":"application/json"
+  //     },
+  //     credentials:'include'
+  //   })
+  //   if(response.status===200){
+  //     const data = await response.json()
+  //     setCards(data)
+  //   }
+  // }
+
+  // React.useEffect(() => {
+  //   getCards()
+  // })
+  
   async function handleAdd(e) {
     e.preventDefault()
-    const userId = localStorage.getItem('userId')
+    
     if (title === '' || desc === '' || tag === '') 
     {
       return alert('Please fill all the fields')
@@ -38,7 +59,15 @@ const MainApp = () => {
       })
     })
     if(response.status===201){
-      console.log("ok");
+      console.log(response.json()
+      .then(data => 
+        {
+          try {
+            localStorage.setItem('cardId',data._id)
+          } catch (error) {
+            console.log(error)            
+          }
+        }));
     }
     }
   }
@@ -47,8 +76,8 @@ const MainApp = () => {
     const newCard = { title, desc, tag }
     setCards([...cards, newCard])
   }
-
-  const deleteCard = (index) => {
+  const CardId = localStorage.getItem('cardId')
+  const deleteCard = (index,CardId) => {
     const newCards = [...cards];
     newCards.splice(index, 1);
     setCards(newCards);
@@ -58,19 +87,18 @@ const MainApp = () => {
         "Content-Type":"application/json"
       },
       body:JSON.stringify({
-        index:index
+        index:index,
+        CardId:CardId
       })
     })
     console.log(respose);
   };
-  const filtercards=[]
+  
   const filteredCards = (e) => {
     e.preventDefault()
-    const newCards = cards.filter(card => card.title.toLowerCase().includes(search.toLowerCase()))
-    newCards.map((card,index) => {
-       filtercards.push(card)
-       return filtercards
-    })
+    const newCards = cards.filter((card) => 
+    card.title.toLowerCase().includes(search.toLowerCase()))
+    setFiltercards(newCards)    
   }
 
 
@@ -104,7 +132,7 @@ const MainApp = () => {
         </form>
       </div>
       <hr />
-      <div className='bg-gray-200 h-screen'>
+      <div className='bg-gray-200 h-screen min-h-min'>
        <div className='flex justify-between items-center'>
          <h2 className='text-2xl font-serif font-semibold'>Your Notes</h2>
          <form className='flex justify-between gap-x-2'>
@@ -126,11 +154,16 @@ const MainApp = () => {
        </div>
        
       </div>
-      <div className='bg-gray-600 h-screen'>
-            {filtercards.map((card, index) => (
+      <div className='bg-gray-600 h-screen min-h-min '>
+        <div className='flex justify-between items-center'>
+         <h2 className='text-2xl font-serif font-semibold text-white'>Filtered Notes</h2>
+         </div>
+         <hr />
+        <div className='flex flex-wrap gap-3 m-2'>
+          {filtercards.map((card, index) => (
         <Card key={index} {...card} onDelete={() => deleteCard(index)} />
       ))}
-      
+        </div>
        </div>
       
     </div>

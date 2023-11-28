@@ -1,6 +1,6 @@
 import LandingPage from "./Components/landingPage.js";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import Login from "./Components/login.js";
 import Resgister from "./Components/register.js";
 import Layout from "./layout.js";
