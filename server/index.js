@@ -128,18 +128,23 @@ app.post("/cards", async (req, res) => {
 
 app.get("/cards", async (req, res) => {
   try {
-    res.status(200).json("ok");
+    const cards = await Card.find();
+    res.status(200).json(cards);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
- //NEED TO IMPLEMENT DELETE AND SEARCH PROPERLY
+
 app.post("/delete", async (req, res) => {
   try {
-    const { title,cardId } = req.body;
-    const findCard = await Card.findByIdAndDelete(cardId);
-    res.status(200).json("ok");
+    const {id} = req.body;
+    const findCard = await Card.findByIdAndDelete(id);
+    if (!findCard) {
+      return res.status(404).json({ error: 'Card not found' });
+    }else{
+      res.status(200).json({ message: 'Card deleted successfully' });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

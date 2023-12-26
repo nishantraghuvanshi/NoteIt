@@ -19,7 +19,7 @@ const Card = ({title,desc,tag,onDelete}) => {
 
   return (
     
-      <div className="bg-[#514f4a] shadow-2xl h-48 overflow-hidden rounded-lg ">
+      <div className="bg-[#514f4a] shadow-2xl h-48 w-1/4 overflow-hidden rounded-lg ">
         <div className="card-body flex flex-col h-full text-white p-1">
           <h2 className="card-title font-bold text-2xl">{title}</h2>
           {tag &&  (
@@ -35,7 +35,7 @@ const Card = ({title,desc,tag,onDelete}) => {
           <p className="flex-1 overflow-y-auto flex-wrap">{desc}</p>
           <div className="card-actions flex justify-between items-center">
             <button
-              className="bg-red-600 m-2 text-white font-bold px-4 py-1 rounded-lg"
+              className="bg-red-600 m-2 text-white font-bold px-3  rounded-lg"
               onClick={openModal}
             >
               View Details
@@ -50,7 +50,6 @@ const Card = ({title,desc,tag,onDelete}) => {
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-8 w-1/4 rounded-md">
-            {/* Adjusted width to cover 25% of the screen */}
               <h2 className="font-bold text-3xl mb-4">{title}</h2>
             {tag &&  (
             <div className="text-sm text-gray-300">

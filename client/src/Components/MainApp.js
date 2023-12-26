@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Card from './card.js'
 import { useState } from 'react'
 import UserContext from '../userContext'
@@ -16,30 +16,29 @@ const MainApp = () => {
 
 
   const userId = localStorage.getItem('userId')
-
-
-
-  // React.useEffect(() => {
+  let cardId=useRef([])
+  React.useEffect(() => {
   
-  //   async function getCards(){
-  //   const response = await fetch("http://localhost:8000/cards",{
-  //     method:"GET",
-  //     headers:{
-  //       "Content-Type":"application/json"
-  //     },
-  //     credentials:'include'
-  //   })
-  //   if(response.status===200){
-  //     const data = await response.json()
-  //     setCards(data)
-  //   }
-  // }
-  // if(user){
-  //   getCards()
-  // }
-  // },[])
-  
+    async function getCards(userId){
+    const response = await fetch("http://localhost:8000/cards",{
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      credentials:'include'
+    })
+    if(response.status===200){
+      const data = await response.json()
+      setCards(data)
+      cardId.current=data.map((card)=>card._id)
+    }
+  }
+  if(user){
+    getCards()
+  }
+  },[])
 
+  let newIdList=cardId.current
   async function handleAdd(e) {
     e.preventDefault()
     
@@ -69,7 +68,7 @@ const MainApp = () => {
       .then(data => 
         {
           try {
-            localStorage.setItem('cardId',data._id)
+            console.log("new card created successfully")
           } catch (error) {
             console.log(error)            
           }
@@ -82,8 +81,8 @@ const MainApp = () => {
     const newCard = { title, desc, tag }
     setCards([...cards, newCard])
   }
-  const CardId = localStorage.getItem('cardId')
-  const deleteCard = (index,CardId) => {
+
+  const deleteCard = (index,newIdList) => {
     const newCards = [...cards];
     newCards.splice(index, 1);
     setCards(newCards);
@@ -93,8 +92,7 @@ const MainApp = () => {
         "Content-Type":"application/json"
       },
       body:JSON.stringify({
-        index:index,
-        CardId:CardId
+        id:newIdList[index],
       })
     })
     console.log(respose);
@@ -106,7 +104,6 @@ const MainApp = () => {
     card.title.toLowerCase().includes(search.toLowerCase()))
     setFiltercards(newCards)    
   }
-
 
   
   return (
@@ -156,7 +153,7 @@ const MainApp = () => {
        </div>
        <div className='flex flex-wrap gap-3 m-2'>
           {cards.map((card, index) => (
-        <Card key={index} {...card} onDelete={() => deleteCard(index)} />
+        <Card key={index} {...card} onDelete={() => deleteCard(index,newIdList)} />
       ))}
       
        </div>
@@ -169,7 +166,7 @@ const MainApp = () => {
          <hr />
         <div className='flex flex-wrap gap-3 m-2'>
           {filtercards.map((card, index) => (
-        <Card key={index} {...card} onDelete={() => deleteCard(index)} />
+        <Card key={index} {...card} onDelete={() => deleteCard(index,newIdList)} />
       ))}
         </div>
        </div>
