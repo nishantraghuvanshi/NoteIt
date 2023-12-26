@@ -4,6 +4,7 @@ import { useState } from 'react'
 import UserContext from '../userContext'
 
 
+
 const MainApp = () => {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
@@ -16,7 +17,11 @@ const MainApp = () => {
 
   const userId = localStorage.getItem('userId')
 
-  // async function getCards(){
+
+
+  // React.useEffect(() => {
+  
+  //   async function getCards(){
   //   const response = await fetch("http://localhost:8000/cards",{
   //     method:"GET",
   //     headers:{
@@ -29,11 +34,12 @@ const MainApp = () => {
   //     setCards(data)
   //   }
   // }
-
-  // React.useEffect(() => {
+  // if(user){
   //   getCards()
-  // })
+  // }
+  // },[])
   
+
   async function handleAdd(e) {
     e.preventDefault()
     

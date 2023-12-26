@@ -5,14 +5,25 @@ import UserContext from '../userContext'
 const Header = () => {
   const {user,setUser} = React.useContext(UserContext)
   const [redirect, setRedirect] = React.useState(false)
+  
+
+  
   useEffect(() => {
-    fetch('http://localhost:8000/profile', {
-      credentials:'include',})
-      .then(res => 
-        {res.json().then(data => {
-            setUser(data)
-        })})
-  },[])
+    async function getUser(){
+        const response = await fetch('http://localhost:8000/user', {
+          credentials:'include',
+          method:'GET',
+        })
+        if(response.status===200){
+          const data = await response.json()
+          setUser(data)
+        }
+      }
+  if(!user){
+      getUser()
+  }
+    },[])
+  
 
   async function logout(){
     await fetch('http://localhost:8000/logout', {
@@ -23,7 +34,8 @@ const Header = () => {
     setRedirect(true)
     if(redirect){
       setRedirect(false)
-      return window.location.href = '/login'
+      window.location.href = '/login'
+      return null
     }
 
   }

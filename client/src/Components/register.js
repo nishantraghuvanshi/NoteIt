@@ -18,6 +18,8 @@ const Resgister = () => {
         if(response.ok){
             alert('User created successfully.')
             console.log('success')
+            setUsername('')
+            setPassword('')
         }
         else{
             alert('User already exists.')

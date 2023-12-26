@@ -7,6 +7,7 @@ import UserContext from '../userContext'
 
 
 
+
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -32,6 +33,8 @@ const Login = () => {
         setUser(data)
         setRedirect(true)
         localStorage.setItem('userId',data.id)
+        setUsername('')
+        setPassword('')
         })
         
       }
