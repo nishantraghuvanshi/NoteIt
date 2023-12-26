@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import UserContext from '../userContext'
+import {navigate} from 'react-router-dom'
 
 const Header = () => {
   const {user,setUser} = React.useContext(UserContext)
@@ -32,10 +33,11 @@ const Header = () => {
     })
     setUser(null)
     setRedirect(true)
+    localStorage.removeItem('userId')
     if(redirect){
-      setRedirect(false)
-      window.location.href = '/login'
-      return null
+      setRedirect(false);
+      window.location.href='/';
+
     }
 
   }

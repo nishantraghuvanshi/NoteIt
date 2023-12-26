@@ -19,7 +19,7 @@ const Card = ({title,desc,tag,onDelete}) => {
 
   return (
     
-      <div className="bg-[#514f4a] shadow-xl h-48 overflow-hidden rounded-lg">
+      <div className="bg-[#514f4a] shadow-2xl h-48 overflow-hidden rounded-lg ">
         <div className="card-body flex flex-col h-full text-white p-1">
           <h2 className="card-title font-bold text-2xl">{title}</h2>
           {tag &&  (

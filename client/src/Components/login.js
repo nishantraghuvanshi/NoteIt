@@ -4,10 +4,6 @@ import { useState } from 'react'
 import UserContext from '../userContext'
 
 
-
-
-
-
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -47,8 +43,8 @@ const Login = () => {
       console.log(error)
     }
     if(redirect){
-      setRedirect(false)
-      return window.location.href = '/'
+      setRedirect(false);
+      <redirect to='/MainApp'/>
     }
 
   }

@@ -138,9 +138,11 @@ const MainApp = () => {
         </form>
       </div>
       <hr />
-      <div className='bg-gray-200 h-screen min-h-min'>
+      <div className='bg-gray-200 h-screen min-h-min overflow-scroll'>
        <div className='flex justify-between items-center'>
-         <h2 className='text-2xl font-serif font-semibold'>Your Notes</h2>
+        <h2 className='text-2xl font-serif font-semibold'>Your Notes
+        <hr className=' border-black border-7'/>
+        </h2>
          <form className='flex justify-between gap-x-2'>
           <input type='text' 
           placeholder='search' 
@@ -160,7 +162,7 @@ const MainApp = () => {
        </div>
        
       </div>
-      <div className='bg-gray-600 h-screen min-h-min '>
+      <div className='bg-gray-500 h-screen min-h-min overflow-scroll'>
         <div className='flex justify-between items-center'>
          <h2 className='text-2xl font-serif font-semibold text-white'>Filtered Notes</h2>
          </div>
