@@ -14,16 +14,18 @@ const MainApp = () => {
   const [filtercards,setFiltercards] = useState([])
   const {user,setUser} = React.useContext(UserContext)
 
-
-  const userId = localStorage.getItem('userId')
+  const userId = useRef(localStorage.getItem('userId'))
   let cardId=useRef([])
-  React.useEffect(() => {
   
-    async function getCards(userId){
+  let mainId=userId.current
+  React.useEffect(() => {
+    
+    async function getCards(mainId){
     const response = await fetch("http://localhost:8000/cards",{
       method:"GET",
       headers:{
-        "Content-Type":"application/json"
+        "Content-Type":"application/json",
+        "mainId":mainId
       },
       credentials:'include'
     })
@@ -34,11 +36,13 @@ const MainApp = () => {
     }
   }
   if(user){
-    getCards()
+    getCards(mainId)
   }
   },[])
 
   let newIdList=cardId.current
+
+
   async function handleAdd(e) {
     e.preventDefault()
     
@@ -60,7 +64,7 @@ const MainApp = () => {
         title:title,
         desc:desc,
         tag:tag,
-        userId:userId
+        userId:mainId
       })
     })
     if(response.status===201){

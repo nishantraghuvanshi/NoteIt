@@ -9,7 +9,6 @@ import connectDB from "./db/index.js";
 import User from "./models/user.model.js";
 import jwt from "jsonwebtoken";
 import Card from "./models/card.model.js";
-import authenticateUser from "./middleware/authenticateverify.js";
 
 const app=Express();
 app.use(cors({
@@ -128,7 +127,8 @@ app.post("/cards", async (req, res) => {
 
 app.get("/cards", async (req, res) => {
   try {
-    const cards = await Card.find();
+    const userId=req.headers["mainid"];
+    const cards = await Card.find({ user: userId });
     res.status(200).json(cards);
   } catch (error) {
     console.error(error);
@@ -149,6 +149,12 @@ app.post("/delete", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+
+//Global Catches->Error handling middleware
+app.use(function(err,req,res,next){
+    res.status(500).json({error:"Sorry Something went wrong"});
 });
 
 

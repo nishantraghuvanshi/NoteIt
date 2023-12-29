@@ -36,8 +36,7 @@ const Header = () => {
     localStorage.removeItem('userId')
     if(redirect){
       setRedirect(false);
-      window.location.href='/';
-
+      window.location.href="/";
     }
 
   }
