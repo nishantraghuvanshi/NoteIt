@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 
 const Card = ({title,desc,tag,onDelete}) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isEditOpen, setEditOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState(title);
+  const [newDesc, setNewDesc] = useState(desc);
+  const [nTag, setNTag] = useState(tag);
   const newTag=tag.split(' ')
   
+  const cardId=localStorage.getItem('cardId')
+
   const handleDelete = () => {
     onDelete();
   }
@@ -15,6 +21,33 @@ const Card = ({title,desc,tag,onDelete}) => {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+
+  const handleEdit = () => {
+    setEditOpen(true);
+  }
+
+  const closeEdit = () => {
+    fetch(`http://localhost:8000/update`,{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        title:newTitle,
+        desc:newDesc,
+        tag:nTag,
+        id:cardId
+      })
+    })
+    if(newTitle==='' || newDesc==='' || nTag===''){
+      return alert('Please fill all the fields')
+    }
+    else{
+      setEditOpen(false);
+    }
+
+  }
 
 
   return (
@@ -40,10 +73,50 @@ const Card = ({title,desc,tag,onDelete}) => {
             >
               View Details
             </button>
-            <button className="bg-red-600 m-2 text-white font-bold px-4 py-1 rounded-lg" onClick={handleDelete}>Delete</button>
+            <button className="bg-red-600 m-2 text-white font-bold px-2 py-1 rounded-lg" onClick={handleEdit}>Edit</button>
+            <button className="bg-red-600 m-2 text-white font-bold px-2 py-1 rounded-lg" onClick={handleDelete}>Delete</button>
                
           </div>
         </div>
+
+        {/* Edit */}
+        {isEditOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-8 w-1/4 rounded-md">
+              <h2 className="font-bold text-3xl mb-4">Edit Note</h2>
+            <input type='text' 
+            placeholder='title' 
+            className='block w-full p-5 border-2 my-3 rounded-lg'
+            value={newTitle}
+            onChange={(e)=>{setNewTitle(e.target.value)}}
+            />
+            <input 
+            type='text' 
+            placeholder='tags[Enter space seperated tags with space at the end]' 
+            className='block w-full p-5 border-2 my-3 rounded-lg'
+            value={nTag}
+            onChange={(e)=>{setNTag(e.target.value)}}
+            />
+            <textarea 
+            type='input' 
+            placeholder='description' 
+            className='block w-full p-5 border-2 my-3 rounded-lg'
+            value={newDesc}
+            onChange={(e)=>{setNewDesc(e.target.value)}}
+            />
+            <div className="mt-4 flex justify-end">
+              
+              <button
+                className="bg-red-600 text-white font-bold px-4 py-1 rounded-lg"
+                onClick={closeEdit}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+        
 
 
       {/* Modal */}

@@ -151,6 +151,24 @@ app.post("/delete", async (req, res) => {
   }
 });
 
+app.post("/update", async (req, res) => {
+    const {title,desc,tag} = req.body;
+    const id=req.headers["cardid"];
+    try {
+      const findCard = await Card.findById(id);
+      if (!findCard) {
+        return res.status(404).json({ error: 'Card not found' });
+      }
+      else{
+        const updatedCard = await Card.findByIdAndUpdate(id,{title,desc,tag},{new:true});
+        res.status(200).json(updatedCard);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 //Global Catches->Error handling middleware
 app.use(function(err,req,res,next){

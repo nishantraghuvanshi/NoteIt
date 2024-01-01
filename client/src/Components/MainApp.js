@@ -101,6 +101,7 @@ const MainApp = () => {
     })
     console.log(respose);
   };
+
   
   const filteredCards = (e) => {
     e.preventDefault()
@@ -109,7 +110,6 @@ const MainApp = () => {
     setFiltercards(newCards)    
   }
 
-  
   return (
     <div>
       <div className='w-1/2 '>
