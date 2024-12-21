@@ -112,26 +112,26 @@ const MainApp = () => {
 
   return (
     <div>
-      <div className='w-1/2 '>
+      <div className='w-full p-5 '>
         <form onSubmit={handleAdd}>
           <h2 className='text-2xl font-serif font-semibold'>Add a Note</h2>
           <input type='text' 
           placeholder='title' 
-          className='block w-full p-5 border-2 my-3 rounded-lg'
+          className='block w-1/2 p-5 border-2 my-3 rounded-lg'
           value={title}
           onChange={(e)=>{setTitle(e.target.value)}}
           />
           <input 
           type='text' 
           placeholder='tags[Enter space seperated tags with space at the end]' 
-          className='block w-full p-5 border-2 my-3 rounded-lg'
+          className='block w-1/2 p-5 border-2 my-3 rounded-lg'
           value={tag}
           onChange={(e)=>{setTag(e.target.value)}}
           />
           <textarea 
           type='input' 
           placeholder='description' 
-          className='block w-full p-5 border-2 my-3 rounded-lg'
+          className='block w-3/4 p-5 h-[50vh] border-2 my-3 rounded-lg'
           value={desc}
           onChange={(e)=>{setDesc(e.target.value)}}
           />
