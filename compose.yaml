@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
   client:
@@ -7,24 +7,35 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
     depends_on:
       - server
 
-  # Backend service
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
-    env_file:
-      - ./server/.env
-
+      - "8000:8000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/noteit
     depends_on:
       - mongo
 
-  # MongoDB service
   mongo:
-    image: "mongo:latest"
+    image: mongo:latest
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
